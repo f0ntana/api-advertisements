@@ -3,6 +3,9 @@
 namespace App\Domain\Service;
 
 use App\Domain\Contracts\PicturesContract;
+use App\Models\Advertisement;
+use Illuminate\Http\UploadedFile;
+use Ramsey\Uuid\Uuid;
 
 class PictureService
 {
@@ -10,6 +13,11 @@ class PictureService
      * @var PicturesContract
      */
     private $repository;
+
+    /**
+     * @var string
+     */
+    private $folder = 'app/public';
 
     /**
      * PictureService constructor.
@@ -21,54 +29,54 @@ class PictureService
     }
 
     /**
-     * @param $query
+     * @param Advertisement $advertisement
      * @return \Illuminate\Support\Collection
+     * @internal param $query
      */
-    public function fetchAll($query)
+    public function fetchAll(Advertisement $advertisement)
     {
-        return $this->repository->fetchAll($query);
+        return $this->repository->fetchAllByAdvertisement($advertisement);
     }
 
     /**
-     * @param int $id
+     * @param Advertisement $advertisement
+     * @param int $name
      * @return \App\Models\Picture
      */
-    public function get($id)
+    public function get(Advertisement $advertisement, $name)
     {
-        return $this->repository->find($id);
+        return $this->repository->find($advertisement, $name);
     }
 
     /**
-     * @param array $params
+     * @param Advertisement $advertisement
+     * @param UploadedFile $file
      * @return \App\Models\Picture
-     * @throws \Illuminate\Database\Eloquent\MassAssignmentException
+     * @throws \Symfony\Component\HttpFoundation\File\Exception\FileException
      */
-    public function create(array $params)
+    public function create(Advertisement $advertisement, UploadedFile $file)
     {
-        return $this->repository->create($params);
+        $filename = Uuid::uuid4() . '.' . $file->getClientOriginalExtension();
+        $path = storage_path($this->folder);
+
+        if ($file->move($path, $filename)) {
+            return $this->repository->create($advertisement, [
+                'file' => $filename,
+                'active' => true,
+            ]);
+        }
+
+        return false;
     }
 
     /**
-     * @param Picture $picture
-     * @param array $params
+     * @param Advertisement $advertisement
+     * @param string $name
      * @return \App\Models\Picture
-     * @throws \Illuminate\Database\Eloquent\MassAssignmentException
      */
-    public function update(Picture $picture, array $params)
+    public function delete(Advertisement $advertisement, $name)
     {
-        $this->repository->update($picture, $params);
-
-        return $picture;
-    }
-
-    /**
-     * @param string $id
-     * @return \App\Models\Picture
-     * @throws \Exception
-     */
-    public function delete($id)
-    {
-        $picture = $this->get($id);
+        $picture = $this->get($advertisement, $name);
         $this->repository->delete($picture);
 
         return $picture;

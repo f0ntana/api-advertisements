@@ -2,41 +2,34 @@
 
 namespace App\Domain\Contracts;
 
+use App\Models\Advertisement;
 use App\Models\Picture;
 
 interface PicturesContract
 {
     /**
-     * @param $query
+     * @param Advertisement $advertisement
      * @return \Illuminate\Support\Collection
      */
-    public function fetchAll($query);
+    public function fetchAllByAdvertisement(Advertisement $advertisement);
 
     /**
-     * @param int $id
-     * @return \App\Models\Picture
+     * @param Advertisement $advertisement
+     * @param string $name
+     * @return Picture
      */
-    public function find($id);
+    public function find(Advertisement $advertisement, $name);
 
     /**
+     * @param Advertisement $advertisement
      * @param array $params
-     * @return \App\Models\Picture
-     * @throws \Illuminate\Database\Eloquent\MassAssignmentException
+     * @return Picture
      */
-    public function create(array $params);
+    public function create(Advertisement $advertisement, array $params);
 
     /**
      * @param Picture $picture
-     * @param array $params
-     * @return \App\Models\Picture
-     * @throws \Illuminate\Database\Eloquent\MassAssignmentException
-     */
-    public function update(Picture $picture, array $params);
-
-    /**
-     * @param Picture $picture
-     * @return \App\Models\Picture
-     * @throws \Exception
+     * @return Picture
      */
     public function delete(Picture $picture);
 }

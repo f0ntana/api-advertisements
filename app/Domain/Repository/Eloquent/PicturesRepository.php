@@ -3,62 +3,47 @@
 namespace App\Domain\Repository\Eloquent;
 
 use App\Domain\Contracts\PicturesContract;
+use App\Models\Advertisement;
 use App\Models\Picture;
 
 class PicturesRepository implements PicturesContract
 {
     /**
-     * @param $query
+     * @param Advertisement $advertisement
      * @return \Illuminate\Support\Collection
      */
-    public function fetchAll($query)
+    public function fetchAllByAdvertisement(Advertisement $advertisement)
     {
-        return Picture::all();
+        return $advertisement->pictures;
     }
 
     /**
-     * @param int $id
-     * @return \App\Models\Picture
+     * @param Advertisement $advertisement
+     * @param string $name
+     * @return Picture
      */
-    public function find($id)
+    public function find(Advertisement $advertisement, $name)
     {
-        return Picture::find($id);
+        return $advertisement->pictures()->whereFile($name)->first();
     }
 
     /**
+     * @param Advertisement $advertisement
      * @param array $params
-     * @return \App\Models\Picture
+     * @return Picture
      * @throws \Illuminate\Database\Eloquent\MassAssignmentException
      */
-    public function create(array $params)
+    public function create(Advertisement $advertisement, array $params)
     {
         $picture = (new Picture())->fill($params);
-        $picture->save();
+        $advertisement->pictures()->save($picture);
 
         return $picture;
     }
 
     /**
      * @param Picture $picture
-     * @param array $params
-     * @return \App\Models\Picture
-     * @throws \Illuminate\Database\Eloquent\MassAssignmentException
-     */
-    public function update(Picture $picture, array $params)
-    {
-        $picture->fill([
-            'email' => $params['email'],
-            'name' => $params['name']
-        ]);
-
-        $picture->save();
-
-        return $picture;
-    }
-
-    /**
-     * @param Picture $picture
-     * @return \App\Models\Picture
+     * @return bool
      * @throws \Exception
      */
     public function delete(Picture $picture)

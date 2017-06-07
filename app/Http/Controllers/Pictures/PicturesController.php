@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Pictures;
 
+use App\Domain\Service\AdvertisementService;
 use App\Domain\Service\PictureService;
 use App\Http\Controllers\Controller;
 use App\Http\Request\PictureRequest;
@@ -14,25 +15,33 @@ class PicturesController extends Controller
      * @var PictureService
      */
     private $pictures;
+    /**
+     * @var AdvertisementService
+     */
+    private $advertisements;
 
     /**
      * PicturesController constructor.
+     * @param AdvertisementService $advertisements
      * @param PictureService $pictures
      */
-    public function __construct(PictureService $pictures)
+    public function __construct(AdvertisementService $advertisements, PictureService $pictures)
     {
+        $this->advertisements = $advertisements;
         $this->pictures = $pictures;
     }
 
     /**
      * Display a listing of the resource.
      *
+     * @param string $uuid
      * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index($uuid, Request $request)
     {
-        $pictures = $this->pictures->fetchAllByUser($request->user());
+        $advertisement = $this->advertisements->getByUser($request->user(), $uuid);
+        $pictures = $this->pictures->fetchAll($advertisement);
 
         return fractal($pictures, new PictureTransformer);
     }
@@ -40,13 +49,15 @@ class PicturesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
+     * @param string $uuid
      * @param PictureRequest $request
      * @return \Illuminate\Http\Response
-     * @throws \Illuminate\Database\Eloquent\MassAssignmentException
+     * @throws \Symfony\Component\HttpFoundation\File\Exception\FileException
      */
-    public function store(PictureRequest $request)
+    public function store($uuid, PictureRequest $request)
     {
-        $picture = $this->pictures->create($request->user(), $request->all());
+        $advertisement = $this->advertisements->getByUser($request->user(), $uuid);
+        $picture = $this->pictures->create($advertisement, $request->file('file'));
 
         return fractal($picture, new PictureTransformer);
     }
@@ -55,13 +66,15 @@ class PicturesController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Request $request
-     * @param  int $id
+     * @param  string $uuid
+     * @param  string $name
      * @return \Illuminate\Http\Response
      * @throws \Exception
      */
-    public function destroy(Request $request, $id)
+    public function destroy($uuid, $name, Request $request)
     {
-        $picture = $this->pictures->delete($request->user(), $id);
+        $advertisement = $this->advertisements->getByUser($request->user(), $uuid);
+        $picture = $this->pictures->delete($advertisement, $name);
 
         return fractal($picture, new PictureTransformer);
     }
