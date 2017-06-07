@@ -12,7 +12,7 @@ class Pictures
     public function map(Router $router)
     {
         $router->group(['middleware' => 'auth:api'], function (Router $router) {
-            $router->resource('advertisements.pictures', 'PicturesController', ['except' => ['create', 'edit']]);
+            $router->resource('advertisements.pictures', 'PicturesController', ['only' => ['index', 'store', 'destroy']]);
         });
     }
 }

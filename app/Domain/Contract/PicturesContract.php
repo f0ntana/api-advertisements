@@ -2,9 +2,9 @@
 
 namespace App\Domain\Contracts;
 
-use App\Models\User;
+use App\Models\Picture;
 
-interface UsersContract
+interface PicturesContract
 {
     /**
      * @param $query
@@ -14,29 +14,29 @@ interface UsersContract
 
     /**
      * @param int $id
-     * @return \App\Models\User
+     * @return \App\Models\Picture
      */
     public function find($id);
 
     /**
      * @param array $params
-     * @return \App\Models\User
+     * @return \App\Models\Picture
      * @throws \Illuminate\Database\Eloquent\MassAssignmentException
      */
     public function create(array $params);
 
     /**
-     * @param User $user
+     * @param Picture $picture
      * @param array $params
-     * @return \App\Models\User
+     * @return \App\Models\Picture
      * @throws \Illuminate\Database\Eloquent\MassAssignmentException
      */
-    public function update(User $user, array $params);
+    public function update(Picture $picture, array $params);
 
     /**
-     * @param User $user
-     * @return \App\Models\User
+     * @param Picture $picture
+     * @return \App\Models\Picture
      * @throws \Exception
      */
-    public function delete(User $user);
+    public function delete(Picture $picture);
 }

@@ -2,20 +2,20 @@
 
 namespace App\Domain\Service;
 
-use App\Domain\Contracts\UsersContract;
+use App\Domain\Contracts\PicturesContract;
 
-class UserService
+class PictureService
 {
     /**
-     * @var UsersContract
+     * @var PicturesContract
      */
     private $repository;
 
     /**
-     * UserService constructor.
-     * @param UsersContract $repository
+     * PictureService constructor.
+     * @param PicturesContract $repository
      */
-    public function __construct(UsersContract $repository)
+    public function __construct(PicturesContract $repository)
     {
         $this->repository = $repository;
     }
@@ -31,7 +31,7 @@ class UserService
 
     /**
      * @param int $id
-     * @return \App\Models\User
+     * @return \App\Models\Picture
      */
     public function get($id)
     {
@@ -40,7 +40,7 @@ class UserService
 
     /**
      * @param array $params
-     * @return \App\Models\User
+     * @return \App\Models\Picture
      * @throws \Illuminate\Database\Eloquent\MassAssignmentException
      */
     public function create(array $params)
@@ -49,28 +49,28 @@ class UserService
     }
 
     /**
-     * @param User $user
+     * @param Picture $picture
      * @param array $params
-     * @return \App\Models\User
+     * @return \App\Models\Picture
      * @throws \Illuminate\Database\Eloquent\MassAssignmentException
      */
-    public function update(User $user, array $params)
+    public function update(Picture $picture, array $params)
     {
-        $this->repository->update($user, $params);
+        $this->repository->update($picture, $params);
 
-        return $user;
+        return $picture;
     }
 
     /**
      * @param string $id
-     * @return \App\Models\User
+     * @return \App\Models\Picture
      * @throws \Exception
      */
     public function delete($id)
     {
-        $user = $this->get($id);
-        $this->repository->delete($user);
+        $picture = $this->get($id);
+        $this->repository->delete($picture);
 
-        return $user;
+        return $picture;
     }
 }
