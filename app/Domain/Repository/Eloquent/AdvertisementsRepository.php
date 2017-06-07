@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Repository;
+namespace App\Domain\Repository\Eloquent;
 
 use App\Domain\Contracts\AdvertisementsContract;
 use App\Models\Advertisement;
@@ -23,19 +23,15 @@ class AdvertisementsRepository implements AdvertisementsContract
     }
 
     /**
+     * @param User $user
      * @param Advertisement $advertisement
      * @param array $params
      * @return Advertisement
      * @throws \Illuminate\Database\Eloquent\MassAssignmentException
      */
-    public function update(Advertisement $advertisement, array $params)
+    public function update(User $user, Advertisement $advertisement, array $params)
     {
-        $advertisement->fill([
-            'email' => $params['email'],
-            'name' => $params['name'],
-        ]);
-
-        $advertisement->save();
+        $user->advertisements()->save($advertisement->fill($params));
 
         return $advertisement;
     }

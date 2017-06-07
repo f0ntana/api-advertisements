@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Repository;
+namespace App\Domain\Repository\Eloquent;
 
 use App\Domain\Contracts\UsersContract;
 use App\Models\User;

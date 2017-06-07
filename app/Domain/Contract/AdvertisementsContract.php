@@ -15,12 +15,12 @@ interface AdvertisementsContract
     public function create(User $user, array $params);
 
     /**
+     * @param User $user
      * @param Advertisement $advertisement
      * @param array $params
-     * @return Advertisement
-     * @throws \Illuminate\Database\Eloquent\MassAssignmentException
+     * @return mixed
      */
-    public function update(Advertisement $advertisement, array $params);
+    public function update(User $user, Advertisement $advertisement, array $params);
 
     /**
      * @param int $id

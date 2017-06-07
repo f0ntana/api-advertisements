@@ -4,8 +4,8 @@ namespace App\Providers;
 
 use App\Domain\Contracts\AdvertisementsContract;
 use App\Domain\Contracts\UsersContract;
-use App\Domain\Repository\AdvertisementsRepository;
-use App\Domain\Repository\UsersRepository;
+use App\Domain\Repository\Eloquent\AdvertisementsRepository;
+use App\Domain\Repository\Eloquent\UsersRepository;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider

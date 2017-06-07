@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Advertisement;
 
 use App\Domain\Service\Advertisement\CreateService;
+use App\Domain\Service\Advertisement\Delete;
 use App\Domain\Service\Advertisement\FetchAll;
 use App\Domain\Service\Advertisement\GetOne;
+use App\Domain\Service\Advertisement\UpdateService;
 use App\Http\Controllers\Controller;
 use App\Http\Request\Advertisement\CreateRequest;
+use App\Http\Request\Advertisement\UpdateRequest;
 use App\Http\Transformer\AdvertisementTransformer;
 use Illuminate\Http\Request;
 
@@ -57,25 +60,30 @@ class AdvertisementsController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int $id
-     * @return \Illuminate\Http\Response
+     * @param UpdateRequest $request
+     * @param UpdateService $service
+     * @param $id
+     * @return \Spatie\Fractal\Fractal
      */
-    public function update(Request $request, $id)
+    public function update(UpdateRequest $request, UpdateService $service, $id)
     {
-        //
+        $advertisement = $service->fire($request->user(), $id, $request->all());
+
+        return fractal($advertisement, new AdvertisementTransformer);
     }
 
     /**
      * Remove the specified resource from storage.
      *
+     * @param Request $request
+     * @param Delete $delete
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, Delete $delete, $id)
     {
-        //
+        $advertisement = $delete->fire($request->user(), $id);
+
+        return fractal($advertisement, new AdvertisementTransformer);
     }
 }
