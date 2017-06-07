@@ -14,8 +14,11 @@ class AdvertisementTransformer extends TransformerAbstract
     public function transform(Advertisement $advertisement)
     {
         return [
-            'title' => $advertisement->name,
-            'price' => $advertisement->email,
+            'tags' => $advertisement->tags,
+            'title' => $advertisement->title,
+            'price' => $advertisement->price,
+            'published' => $advertisement->published_at ? (string)$advertisement->published_at : null,
+            'description' => $advertisement->description,
         ];
     }
 }
