@@ -28,7 +28,11 @@ class UsersRepository implements UsersContract
      */
     public function update(User $user, array $params)
     {
-        $user->fill($params);
+        $user->fill([
+            'email' => $params['email'],
+            'name' => $params['name'],
+        ]);
+
         $user->save();
 
         return $user;

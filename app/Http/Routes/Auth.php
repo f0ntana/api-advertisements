@@ -22,5 +22,8 @@ class Auth
 
         # Reset Password
         $router->post('password/reset', 'ResetPasswordController@reset');
+
+        # Update Data
+        $router->put('me', 'UserController@update')->middleware('auth:api');
     }
 }
