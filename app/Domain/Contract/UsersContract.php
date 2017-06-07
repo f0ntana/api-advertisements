@@ -6,9 +6,22 @@ use App\Models\User;
 
 interface UsersContract
 {
+
+    /**
+     * @param $query
+     * @return \Illuminate\Support\Collection
+     */
+    public function fetchAll($query);
+
+    /**
+     * @param int $id
+     * @return \App\Models\User
+     */
+    public function find($id);
+
     /**
      * @param array $params
-     * @return User
+     * @return \App\Models\User
      * @throws \Illuminate\Database\Eloquent\MassAssignmentException
      */
     public function create(array $params);
@@ -16,26 +29,14 @@ interface UsersContract
     /**
      * @param User $user
      * @param array $params
-     * @return User
+     * @return \App\Models\User
      * @throws \Illuminate\Database\Eloquent\MassAssignmentException
      */
     public function update(User $user, array $params);
 
     /**
-     * @param int $id
-     * @return User
-     */
-    public function get($id);
-
-    /**
-     * @param string $email
-     * @return User
-     */
-    public function getByEmail($email);
-
-    /**
      * @param User $user
-     * @return User
+     * @return \App\Models\User
      * @throws \Exception
      */
     public function delete(User $user);

@@ -2,11 +2,7 @@
 
 namespace App\Http\Controllers\Advertisement;
 
-use App\Domain\Service\Advertisement\CreateService;
-use App\Domain\Service\Advertisement\Delete;
-use App\Domain\Service\Advertisement\FetchAll;
-use App\Domain\Service\Advertisement\GetOne;
-use App\Domain\Service\Advertisement\UpdateService;
+use App\Domain\Service\AdvertisementService;
 use App\Http\Controllers\Controller;
 use App\Http\Request\Advertisement\CreateRequest;
 use App\Http\Request\Advertisement\UpdateRequest;
@@ -16,15 +12,28 @@ use Illuminate\Http\Request;
 class AdvertisementsController extends Controller
 {
     /**
+     * @var AdvertisementService
+     */
+    private $advertisements;
+
+    /**
+     * AdvertisementsController constructor.
+     * @param AdvertisementService $advertisements
+     */
+    public function __construct(AdvertisementService $advertisements)
+    {
+        $this->advertisements = $advertisements;
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @param Request $request
-     * @param FetchAll $fetchAll
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, FetchAll $fetchAll)
+    public function index(Request $request)
     {
-        $advertisements = $fetchAll->byUser($request->user());
+        $advertisements = $this->advertisements->fetchAllByUser($request->user());
 
         return fractal($advertisements, new AdvertisementTransformer);
     }
@@ -33,13 +42,12 @@ class AdvertisementsController extends Controller
      * Store a newly created resource in storage.
      *
      * @param CreateRequest $request
-     * @param CreateService $service
      * @return \Illuminate\Http\Response
      * @throws \Illuminate\Database\Eloquent\MassAssignmentException
      */
-    public function store(CreateRequest $request, CreateService $service)
+    public function store(CreateRequest $request)
     {
-        $advertisement = $service->fire($request->user(), $request->all());
+        $advertisement = $this->advertisements->create($request->user(), $request->all());
 
         return fractal($advertisement, new AdvertisementTransformer);
     }
@@ -48,26 +56,25 @@ class AdvertisementsController extends Controller
      * Display the specified resource.
      *
      * @param  int $id
-     * @param GetOne $getOne
      * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function show($id, GetOne $getOne, Request $request)
+    public function show($id, Request $request)
     {
-        $advertisement = $getOne->byUser($request->user(), $id);
+        $advertisement = $this->advertisements->getByUser($request->user(), $id);
 
         return fractal($advertisement, new AdvertisementTransformer);
     }
 
     /**
      * @param UpdateRequest $request
-     * @param UpdateService $service
      * @param $id
      * @return \Spatie\Fractal\Fractal
+     * @throws \Illuminate\Database\Eloquent\MassAssignmentException
      */
-    public function update(UpdateRequest $request, UpdateService $service, $id)
+    public function update(UpdateRequest $request, $id)
     {
-        $advertisement = $service->fire($request->user(), $id, $request->all());
+        $advertisement = $this->advertisements->update($request->user(), $id, $request->all());
 
         return fractal($advertisement, new AdvertisementTransformer);
     }
@@ -76,13 +83,13 @@ class AdvertisementsController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Request $request
-     * @param Delete $delete
      * @param  int $id
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
-    public function destroy(Request $request, Delete $delete, $id)
+    public function destroy(Request $request, $id)
     {
-        $advertisement = $delete->fire($request->user(), $id);
+        $advertisement = $this->advertisements->delete($request->user(), $id);
 
         return fractal($advertisement, new AdvertisementTransformer);
     }

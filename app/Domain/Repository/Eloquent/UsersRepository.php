@@ -8,8 +8,26 @@ use App\Models\User;
 class UsersRepository implements UsersContract
 {
     /**
+     * @param $query
+     * @return \Illuminate\Support\Collection
+     */
+    public function fetchAll($query)
+    {
+        return User::all();
+    }
+
+    /**
+     * @param int $id
+     * @return \App\Models\User
+     */
+    public function find($id)
+    {
+        return User::find($id);
+    }
+
+    /**
      * @param array $params
-     * @return User
+     * @return \App\Models\User
      * @throws \Illuminate\Database\Eloquent\MassAssignmentException
      */
     public function create(array $params)
@@ -23,14 +41,14 @@ class UsersRepository implements UsersContract
     /**
      * @param User $user
      * @param array $params
-     * @return User
+     * @return \App\Models\User
      * @throws \Illuminate\Database\Eloquent\MassAssignmentException
      */
     public function update(User $user, array $params)
     {
         $user->fill([
             'email' => $params['email'],
-            'name' => $params['name'],
+            'name' => $params['name']
         ]);
 
         $user->save();
@@ -39,26 +57,8 @@ class UsersRepository implements UsersContract
     }
 
     /**
-     * @param int $id
-     * @return User
-     */
-    public function get($id)
-    {
-        return User::find($id);
-    }
-
-    /**
-     * @param string $email
-     * @return User
-     */
-    public function getByEmail($email)
-    {
-        return User::whereEmail($email)->first();
-    }
-
-    /**
      * @param User $user
-     * @return User
+     * @return \App\Models\User
      * @throws \Exception
      */
     public function delete(User $user)

@@ -8,25 +8,54 @@ use App\Models\User;
 interface AdvertisementsContract
 {
     /**
+     * @param $query
+     * @return \Illuminate\Support\Collection
+     */
+    public function fetchAll($query);
+
+    /**
+     * @param User $user
+     * @return \Illuminate\Support\Collection
+     */
+    public function fetchAllByUser(User $user);
+
+    /**
+     * @param string $uuid
+     * @return Advertisement
+     */
+    public function find($uuid);
+
+    /**
+     * @param User $user
+     * @param string $uuid
+     * @return Advertisement
+     */
+    public function findByUser($user, $uuid);
+
+    /**
      * @param User $user
      * @param array $params
      * @return Advertisement
+     * @throws \Illuminate\Database\Eloquent\MassAssignmentException
      */
     public function create(User $user, array $params);
+
+    /**
+     * @param Advertisement $advertisement
+     * @param array $params
+     * @return Advertisement
+     * @throws \Illuminate\Database\Eloquent\MassAssignmentException
+     */
+    public function update(Advertisement $advertisement, array $params);
 
     /**
      * @param User $user
      * @param Advertisement $advertisement
      * @param array $params
-     * @return mixed
-     */
-    public function update(User $user, Advertisement $advertisement, array $params);
-
-    /**
-     * @param int $id
      * @return Advertisement
+     * @throws \Illuminate\Database\Eloquent\MassAssignmentException
      */
-    public function get($id);
+    public function updateByUser(User $user, Advertisement $advertisement, array $params);
 
     /**
      * @param Advertisement $advertisement
@@ -37,14 +66,9 @@ interface AdvertisementsContract
 
     /**
      * @param User $user
+     * @param Advertisement $advertisement
      * @return Advertisement
+     * @throws \Exception
      */
-    public function fetchOwner(User $user);
-
-    /**
-     * @param User $user
-     * @param string $uuid
-     * @return Advertisement
-     */
-    public function getOwnerByUuid(User $user, $uuid);
+    public function togglePublished(User $user, Advertisement $advertisement);
 }

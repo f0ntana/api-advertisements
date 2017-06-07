@@ -47,6 +47,7 @@ class WelcomeMessage extends Notification
     {
         return (new MailMessage)
             ->subject('Bem vindo')
+            ->salutation('Obrigado')
             ->line('Parabéns, você esta cadastrado em nosso sistema.');
     }
 
