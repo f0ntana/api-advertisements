@@ -40,4 +40,11 @@ interface AdvertisementsContract
      * @return Advertisement
      */
     public function fetchOwner(User $user);
+
+    /**
+     * @param User $user
+     * @param string $uuid
+     * @return Advertisement
+     */
+    public function getOwnerByUuid(User $user, $uuid);
 }

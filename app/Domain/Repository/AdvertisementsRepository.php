@@ -67,4 +67,14 @@ class AdvertisementsRepository implements AdvertisementsContract
     {
         return $user->advertisements;
     }
+
+    /**
+     * @param User $user
+     * @param string $uuid
+     * @return Advertisement
+     */
+    public function getOwnerByUuid(User $user, $uuid)
+    {
+        return $user->advertisements()->whereUuid($uuid)->first();
+    }
 }

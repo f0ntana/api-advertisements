@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Advertisement;
 
 use App\Domain\Service\Advertisement\CreateService;
 use App\Domain\Service\Advertisement\FetchAll;
+use App\Domain\Service\Advertisement\GetOne;
 use App\Http\Controllers\Controller;
 use App\Http\Request\Advertisement\CreateRequest;
 use App\Http\Transformer\AdvertisementTransformer;
@@ -44,11 +45,15 @@ class AdvertisementsController extends Controller
      * Display the specified resource.
      *
      * @param  int $id
+     * @param GetOne $getOne
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, GetOne $getOne, Request $request)
     {
-        //
+        $advertisement = $getOne->byUser($request->user(), $id);
+
+        return fractal($advertisement, new AdvertisementTransformer);
     }
 
     /**

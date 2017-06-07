@@ -14,6 +14,7 @@ class AdvertisementTransformer extends TransformerAbstract
     public function transform(Advertisement $advertisement)
     {
         return [
+            'uuid' => $advertisement->uuid,
             'tags' => $advertisement->tags,
             'title' => $advertisement->title,
             'price' => $advertisement->price,
