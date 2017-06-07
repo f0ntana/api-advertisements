@@ -49,4 +49,12 @@ class User extends Authenticatable
     {
         $this->notify(new ResetPassword($token));
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function advertisements()
+    {
+        return $this->hasMany(Advertisement::class);
+    }
 }
