@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Advertisement;
+namespace App\Http\Controllers\Advertisements;
 
 use App\Domain\Service\AdvertisementService;
 use App\Http\Controllers\Controller;
-use App\Http\Request\Advertisement\CreateRequest;
-use App\Http\Request\Advertisement\UpdateRequest;
+use App\Http\Request\AdvertisementRequest;
 use App\Http\Transformer\AdvertisementTransformer;
 use Illuminate\Http\Request;
 
@@ -41,11 +40,11 @@ class AdvertisementsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param CreateRequest $request
+     * @param AdvertisementRequest $request
      * @return \Illuminate\Http\Response
      * @throws \Illuminate\Database\Eloquent\MassAssignmentException
      */
-    public function store(CreateRequest $request)
+    public function store(AdvertisementRequest $request)
     {
         $advertisement = $this->advertisements->create($request->user(), $request->all());
 
@@ -67,12 +66,12 @@ class AdvertisementsController extends Controller
     }
 
     /**
-     * @param UpdateRequest $request
+     * @param AdvertisementRequest $request
      * @param $id
      * @return \Spatie\Fractal\Fractal
      * @throws \Illuminate\Database\Eloquent\MassAssignmentException
      */
-    public function update(UpdateRequest $request, $id)
+    public function update(AdvertisementRequest $request, $id)
     {
         $advertisement = $this->advertisements->update($request->user(), $id, $request->all());
 
@@ -90,6 +89,21 @@ class AdvertisementsController extends Controller
     public function destroy(Request $request, $id)
     {
         $advertisement = $this->advertisements->delete($request->user(), $id);
+
+        return fractal($advertisement, new AdvertisementTransformer);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param Request $request
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     * @throws \Exception
+     */
+    public function publish(Request $request, $id)
+    {
+        $advertisement = $this->advertisements->togglePublished($request->user(), $id);
 
         return fractal($advertisement, new AdvertisementTransformer);
     }

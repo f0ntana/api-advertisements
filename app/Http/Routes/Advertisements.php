@@ -4,7 +4,7 @@ namespace App\Http\Routes;
 
 use Illuminate\Contracts\Routing\Registrar as Router;
 
-class Advertisement
+class Advertisements
 {
     /**
      * @param Router $router
@@ -13,6 +13,7 @@ class Advertisement
     {
         $router->group(['middleware' => 'auth:api'], function (Router $router) {
             $router->resource('advertisements', 'AdvertisementsController', ['except' => ['create', 'edit']]);
+            $router->post('advertisements/{uuid}/toggle-published', 'AdvertisementsController@publish');
         });
     }
 }
