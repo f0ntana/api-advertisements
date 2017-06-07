@@ -12,7 +12,7 @@ class Advertisement
     public function map(Router $router)
     {
         $router->group(['middleware' => 'auth:api'], function (Router $router) {
-            $router->resource('/', 'AdvertisementController');
+            $router->resource('advertisements', 'AdvertisementsController', ['except' => ['create', 'edit']]);
         });
     }
 }

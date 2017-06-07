@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Advertisement\Service\User;
+namespace App\Domain\Service\User;
 
-use App\Advertisement\Contracts\UsersContract;
+use App\Domain\Contracts\UsersContract;
+use App\Models\User;
 
-class CreateUserService
+class UpdateService
 {
     /**
      * @var UsersContract
@@ -21,13 +22,14 @@ class CreateUserService
     }
 
     /**
+     * @param User $user
      * @param array $params
-     * @return \App\Models\User
+     * @return User
      * @throws \Illuminate\Database\Eloquent\MassAssignmentException
      */
-    public function fire(array $params)
+    public function fire(User $user, array $params)
     {
-        $user = $this->repository->create($params);
+        $this->repository->update($user, $params);
 
         return $user;
     }

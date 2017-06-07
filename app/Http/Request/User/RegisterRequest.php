@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Request;
+namespace App\Http\Request\User;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class MeRequest extends FormRequest
+class RegisterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -15,7 +15,6 @@ class MeRequest extends FormRequest
     {
         return true;
     }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -25,7 +24,8 @@ class MeRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $this->user()->id,
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6|confirmed',
         ];
     }
 }

@@ -2,23 +2,23 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Advertisement\Service\User\UpdateUserService;
+use App\Domain\Service\User\UpdateService;
 use App\Http\Controllers\Controller;
-use App\Http\Request\MeRequest;
+use App\Http\Request\User\MeRequest;
 use App\Http\Transformer\UserTransformer;
 
 class UserController extends Controller
 {
     /**
-     * @var UpdateUserService
+     * @var UpdateService
      */
     private $service;
 
     /**
      * Create a new controller instance.
-     * @param UpdateUserService $service
+     * @param UpdateService $service
      */
-    public function __construct(UpdateUserService $service)
+    public function __construct(UpdateService $service)
     {
         $this->service = $service;
     }

@@ -2,23 +2,23 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Advertisement\Service\User\CreateUserService;
+use App\Domain\Service\User\CreateService;
 use App\Http\Controllers\Controller;
-use App\Http\Request\RegisterRequest;
+use App\Http\Request\User\RegisterRequest;
 use App\Http\Transformer\UserTransformer;
 
 class RegisterController extends Controller
 {
     /**
-     * @var CreateUserService
+     * @var CreateService
      */
     private $service;
 
     /**
      * Create a new controller instance.
-     * @param CreateUserService $service
+     * @param CreateService $service
      */
-    public function __construct(CreateUserService $service)
+    public function __construct(CreateService $service)
     {
         $this->service = $service;
     }

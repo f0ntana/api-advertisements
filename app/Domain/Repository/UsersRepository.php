@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Advertisement\Repository;
+namespace App\Domain\Repository;
 
-use App\Advertisement\Contracts\UsersContract;
+use App\Domain\Contracts\UsersContract;
 use App\Models\User;
 
 class UsersRepository implements UsersContract
