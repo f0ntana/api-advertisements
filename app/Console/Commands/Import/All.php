@@ -71,6 +71,8 @@ class All extends Command
     {
         $anuncios->each(function ($anuncio) use ($user) {
             if ($advertisement = $this->createAdvertisement($user, $anuncio)) {
+                app(AdvertisementService::class)->togglePublished($user, $advertisement->uuid);
+
                 $this->info("---- {$advertisement->title}");
                 $this->importPictures($advertisement, $anuncio->fotos);
             }

@@ -6,6 +6,8 @@ use App\Domain\Contracts\AdvertisementsContract;
 use App\Models\Advertisement;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
+use DB;
 
 class AdvertisementsRepository implements AdvertisementsContract
 {
@@ -110,5 +112,26 @@ class AdvertisementsRepository implements AdvertisementsContract
         $user->advertisements()->save($advertisement);
 
         return $advertisement;
+    }
+
+    /**
+     * @param string $filter
+     * @return Collection
+     */
+    public function fetchPublished($filter = '')
+    {
+        $query = Advertisement::query()->whereNotNull('published_at');
+
+        if ($filter) {
+            $match = "MATCH(title,description,tags) AGAINST ('$filter' IN BOOLEAN MODE)";
+            $relevance = DB::raw("*, $match as relevance");
+
+            $query->select($relevance)
+                ->whereRaw($match)
+                ->orderBy('relevance')
+                ->get();
+        }
+
+        return $query->get();
     }
 }

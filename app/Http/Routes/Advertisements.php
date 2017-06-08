@@ -15,5 +15,7 @@ class Advertisements
             $router->resource('advertisements', 'AdvertisementsController', ['except' => ['create', 'edit']]);
             $router->post('advertisements/{uuid}/toggle-published', 'AdvertisementsController@publish');
         });
+
+        $router->get('search', 'AdvertisementsController@search');
     }
 }

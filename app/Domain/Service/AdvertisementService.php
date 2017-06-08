@@ -4,6 +4,7 @@ namespace App\Domain\Service;
 
 use App\Domain\Contracts\AdvertisementsContract;
 use App\Models\User;
+use Illuminate\Support\Collection;
 
 class AdvertisementService
 {
@@ -110,5 +111,14 @@ class AdvertisementService
         $this->repository->togglePublished($user, $advertisement);
 
         return $advertisement;
+    }
+
+    /**
+     * @param string $query
+     * @return Collection
+     */
+    public function fetchPublished($query = '')
+    {
+        return $this->repository->fetchPublished($query);
     }
 }

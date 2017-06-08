@@ -107,4 +107,15 @@ class AdvertisementsController extends Controller
 
         return fractal($advertisement, new AdvertisementTransformer);
     }
+
+    /**
+     * @param Request $request
+     * @return \Spatie\Fractal\Fractal
+     */
+    public function search(Request $request)
+    {
+        $advertisement = $this->advertisements->fetchPublished($request->get('q'));
+
+        return fractal($advertisement, new AdvertisementTransformer($request->get('width'), $request->get('height')));
+    }
 }

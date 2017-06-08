@@ -4,6 +4,7 @@ namespace App\Domain\Contracts;
 
 use App\Models\Advertisement;
 use App\Models\User;
+use Illuminate\Support\Collection;
 
 interface AdvertisementsContract
 {
@@ -71,4 +72,10 @@ interface AdvertisementsContract
      * @throws \Exception
      */
     public function togglePublished(User $user, Advertisement $advertisement);
+
+    /**
+     * @param string $filter
+     * @return Collection
+     */
+    public function fetchPublished($filter = '');
 }
