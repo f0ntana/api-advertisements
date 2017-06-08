@@ -17,7 +17,7 @@ class PictureService
     /**
      * @var string
      */
-    private $folder = 'app/public';
+    private $folder = 'app/pictures';
 
     /**
      * PictureService constructor.
@@ -60,6 +60,27 @@ class PictureService
         $path = storage_path($this->folder);
 
         if ($file->move($path, $filename)) {
+            return $this->repository->create($advertisement, [
+                'file' => $filename,
+                'active' => true,
+            ]);
+        }
+
+        return false;
+    }
+
+    /**
+     * @param Advertisement $advertisement
+     * @param string $url
+     * @return \App\Models\Picture
+     * @throws \Symfony\Component\HttpFoundation\File\Exception\FileException
+     */
+    public function createFromUrl(Advertisement $advertisement, $url)
+    {
+        $filename = Uuid::uuid4() . '.' . pathinfo($url, PATHINFO_EXTENSION);
+        $path = storage_path("{$this->folder}/$filename");
+
+        if (copy($url, $path)) {
             return $this->repository->create($advertisement, [
                 'file' => $filename,
                 'active' => true,

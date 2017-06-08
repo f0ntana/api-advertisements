@@ -54,6 +54,21 @@ return [
             'engine' => null,
         ],
 
+        'advertise' => [
+            'driver' => 'mysql',
+            'host' => env('AD_DB_HOST', '127.0.0.1'),
+            'port' => env('AD_DB_PORT', '3306'),
+            'database' => env('AD_DB_DATABASE', 'forge'),
+            'username' => env('AD_DB_USERNAME', 'forge'),
+            'password' => env('AD_DB_PASSWORD', ''),
+            'unix_socket' => env('AD_DB_SOCKET', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'strict' => true,
+            'engine' => null,
+        ],
+
         'pgsql' => [
             'driver' => 'pgsql',
             'host' => env('DB_HOST', '127.0.0.1'),

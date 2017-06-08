@@ -19,7 +19,7 @@ class CreateAdvertisementsTable extends Migration
             $table->string('uuid')->unique();
             $table->string('title');
             $table->text('description');
-            $table->string('tags');
+            $table->text('tags');
             $table->float('price', 10, 2);
             $table->dateTime('published_at')->nullable();
             $table->timestamps();

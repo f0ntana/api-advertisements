@@ -19,6 +19,12 @@ interface UsersContract
     public function find($id);
 
     /**
+     * @param string $email
+     * @return \App\Models\User
+     */
+    public function findByEmail($email);
+
+    /**
      * @param array $params
      * @return \App\Models\User
      * @throws \Illuminate\Database\Eloquent\MassAssignmentException

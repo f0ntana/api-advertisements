@@ -26,6 +26,15 @@ class UsersRepository implements UsersContract
     }
 
     /**
+     * @param string $email
+     * @return \App\Models\User
+     */
+    public function findByEmail($email)
+    {
+        return User::whereEmail($email)->first();
+    }
+
+    /**
      * @param array $params
      * @return \App\Models\User
      * @throws \Illuminate\Database\Eloquent\MassAssignmentException
